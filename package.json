@@ -1,0 +1,58 @@
+{
+  "name": "node-express-mongo-db",
+  "version": "1.0.0",
+  "description": "Simple example of how to integrate mongodb with nodejs",
+  "keywords": [
+    "node mongo",
+    "nodejs mongodb",
+    "mongodb",
+    "rest node mongo",
+    "mongoose mongo",
+    "api mongo node",
+    "express mongodb"
+  ],
+  "author": "Al Diaz",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "build": "babel src --out-dir dist",
+    "lint": "eslint src",
+    "lint:fix": "eslint --fix src",
+    "start": "ENVIRONMENT=prod node dist/index.js",
+    "dev": "ENVIRONMENT=dev nodemon --exec npm run dev-build",
+    "dev-build": "rimraf dist && npm run build && npm start"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.6.0",
+    "express": "^4.16.4",
+    "lodash": "^4.17.21",
+    "mongoose": "^5.12.14",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.14.5",
+    "@babel/core": "^7.14.6",
+    "@babel/plugin-proposal-class-properties": "^7.14.5",
+    "@babel/plugin-proposal-object-rest-spread": "^7.14.5",
+    "@babel/preset-env": "^7.14.5",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^26.6.3",
+    "babel-preset-minify": "^0.5.1",
+    "eslint": "^6.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-friendly-formatter": "^4.0.1",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-jest": "^24.3.6",
+    "eslint-plugin-node": "^9.2.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-promise": "^4.3.1",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "jest": "^26.6.3",
+    "nodemon": "^2.0.7",
+    "prettier": "^2.3.0",
+    "rimraf": "^3.0.2"
+  }
+}
