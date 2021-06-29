@@ -1,7 +1,7 @@
 {
-  "name": "node-express-mongo-db",
+  "name": "node-express-mongo-db-controllers",
   "version": "1.0.0",
-  "description": "Simple example of how to integrate mongodb with nodejs",
+  "description": "Simple example of how to integrate mongodb with nodejs with generic controllers",
   "keywords": [
     "node mongo",
     "nodejs mongodb",
@@ -9,7 +9,8 @@
     "rest node mongo",
     "mongoose mongo",
     "api mongo node",
-    "express mongodb"
+    "express mongodb",
+    "express generic controllers"
   ],
   "author": "Al Diaz",
   "license": "MIT",
@@ -20,7 +21,8 @@
     "lint:fix": "eslint --fix src",
     "start": "ENVIRONMENT=prod node dist/index.js",
     "dev": "ENVIRONMENT=dev nodemon --exec npm run dev-build",
-    "dev-build": "rimraf dist && npm run build && npm start"
+    "dev-build": "rimraf dist && npm run build && npm start",
+    "prepare": "husky install"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -50,6 +52,7 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-promise": "^4.3.1",
     "eslint-plugin-simple-import-sort": "^7.0.0",
+    "husky": "^6.0.0",
     "jest": "^26.6.3",
     "nodemon": "^2.0.7",
     "prettier": "^2.3.0",

@@ -2,6 +2,7 @@ import bodyParser from 'body-parser'
 import express from 'express'
 import morgan from 'morgan'
 
+import applicationRouter from './resources/applications/router'
 import userRouter from './resources/users/router'
 import { connect } from './utils/db'
 import { simulate } from './utils/latency'
@@ -26,6 +27,7 @@ app.use(function (req, res, next) {
   next()
 })
 
+app.use('/api/applications', applicationRouter)
 app.use('/api/users', userRouter)
 
 app.get('/latency', simulate)

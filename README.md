@@ -1,243 +1,125 @@
-# Node, Express and MongoDB
-
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
-[![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
+# Node, Express and MongoDB with generic controllers
 
 ## Overview
 
-This is an easy, basic and raw example of **HOW to** implement an API with Node, Express and MongoDB (Atlas).
+This is an easy, basic and raw example of **HOW to** implement an API with Node, Express and MongoDB (Atlas) **with generic controllers**
 
-## Requirements
+This project is based on the template `node-express-mongo-db`. Check out the repo [README](../node-express-mongo-db/README.md) for setup and development.
 
-- Node 12+
-- NPM
+---
 
-## Install dependencies
+## CRUD Generic Controllers
 
-```
-npm install
-```
+### Using the Generic Controllers
 
-## Running the server
+We are going to use our `generic controllers` to perform common `CRUD operations`, giving a model:
+* Create a document in a collection (POST)
+* Retrieve all the documents in a collection or one document by its ID (GET)
+* Update a document in a collection by its ID (PUT)
+* Delete a document in a collection by its ID (DELETE)
 
-### Development
+If you need to create a custom controller for a particular resource, add it to `/src/resources/collection/controllers.js` and update the router with the route and the exported method (controller) `/src/resources/collection/router.js`
 
-```
-npm run dev
-```
+### Controllers and Side Effects
 
-### Production
+For operations involving `side effects`, or, everything outside the scope of retrieving (GET) you should definitely need authentication and authorization before executing the operation. You don't want random people creating, updating, deleting your resources. This should be obvious, however, if you are using this a template be extremely careful since we are not protecting endpoints (it is not the goal of this material).
 
-```
-npm run build
+Once you have the proper logic in place to allow certain entities to perform CRUD operations, and, if you are going to use `1generic controllers`, just chain the method and pass the imported controller in your `/src/resources/collection/router.js`
 
-npm start
-```
+So, as an example, if you want to support the creation of a new application in the applications collection your `/src/resources/applications/router.js` would look like:
 
-## API endpoints
-
-### GET /api/users
-
-- Returns an object with the key data containing an array of objects with 1,000 records.
-- Supports query string:
-  - ?limit=integer
-  - ?offset=integer
-
-#### Request:
-
-```
-curl http://127.0.0.1:3333/api/users
+```js
+router.route('/').get(controllers.getSomeOrAll)
+  .post(controllers.createOne)
 ```
 
-#### Response:
+If you want to allow, updating and deleting an application in the applications collection:
 
-```json
-{
-  "data": [
-    {
-      "_id": 16,
-      "index": 16,
-      "guid": "2de0ede3-423d-4c12-835d-0f7460bc3e8f",
-      "isActive": true,
-      "age": 24,
-      "name": "Hardy",
-      "lastname": "Zimmerman",
-      "gender": "male",
-      "company": "SYNTAC",
-      "email": "hardyzimmerman@syntac.com",
-      "phone": "+1 (965) 514-3726",
-      "address": "465 Schenck Place, Vallonia, Georgia, 2580"
-    },
-    {
-      "_id": 0,
-      "index": 0,
-      "guid": "3f049239-fc26-4ec0-9a15-c36bc9f78e21",
-      "isActive": true,
-      "age": 38,
-      "name": "Frances",
-      "lastname": "Tyler",
-      "gender": "female",
-      "company": "FROLIX",
-      "email": "francestyler@frolix.com",
-      "phone": "+1 (957) 595-3029",
-      "address": "261 Jefferson Avenue, Terlingua, Kentucky, 8445"
-    },
-    ...
-    ...
-  ]
-}
+```js
+router.route('/:id').get(controllers.getOne)
+  .put(controllers.updateOne)
+  .delete(controllers.deleteOne)
 ```
 
-#### Query string
+### Create new MongoDB collection
 
-##### GET /api/users?limit=1
+We are going to connect to our cluster with the `mongo shell`
 
-- Returns `n` record(s) where `n` is the value (type: Number) of the `limit` key.
+#### MongoDB Community Shell
 
-###### Request:
+##### Mac Installation
 
-```
-curl http://127.0.0.1:3333/api/users?limit=1
-```
-
-###### Response:
-
-```json
-{
-  "data": [
-    {
-      "_id": 16,
-      "index": 16,
-      "guid": "2de0ede3-423d-4c12-835d-0f7460bc3e8f",
-      "isActive": true,
-      "age": 24,
-      "name": "Hardy",
-      "lastname": "Zimmerman",
-      "gender": "male",
-      "company": "SYNTAC",
-      "email": "hardyzimmerman@syntac.com",
-      "phone": "+1 (965) 514-3726",
-      "address": "465 Schenck Place, Vallonia, Georgia, 2580"
-    }
-  ]
-}
+```shell
+brew install mongodb/brew/mongodb-community-shell
 ```
 
-Wrong type for `n` value will return _all the users_.
-Example: `users?limit=%27Hello%27`
+##### Set the proper path
 
-##### GET /api/users?limit=1
+Add `<your mongo shell's download directory>/bin` to your `$PATH` variable
 
-- Returns from `n` (PRIMARY KEY) where `n` is the value (type: Number) of the `offset` key.
-
-###### Request:
-
-```
-curl http://127.0.0.1:3333/api/users?offset=10
+```shell
+export PATH=/usr/local/Cellar/mongodb-community-shell/4.2.0/bin:$PATH
 ```
 
-###### Response:
+##### Execute the connection string
 
-```json
-{
-  "data": [
-    {
-      "_id": 3,
-      "index": 3,
-      "guid": "f744bfbf-1e73-4a02-ac1e-cc028adad367",
-      "isActive": false,
-      "age": 34,
-      "name": "Downs",
-      "lastname": "Conley",
-      "gender": "male",
-      "company": "PROGENEX",
-      "email": "downsconley@progenex.com",
-      "phone": "+1 (859) 522-3715",
-      "address": "962 Alton Place, Cazadero, North Carolina, 7607"
-    },
-    {
-      "_id": 7,
-      "index": 7,
-      "guid": "f8d45f43-356a-4a2b-91cd-8988a8bd461d",
-      "isActive": true,
-      "age": 28,
-      "name": "Paula",
-      "lastname": "Day",
-      "gender": "female",
-      "company": "MARKETOID",
-      "email": "pauladay@marketoid.com",
-      "phone": "+1 (824) 477-2206",
-      "address": "505 Boynton Place, Haring, Nebraska, 540"
-    },
-    ...
-    ...
-  ]
-}
+```shell
+mongo "mongodb+srv://your-mongodb-endpoint.1ckup.mongodb.net/your-database" --username your-user
 ```
 
-### GET /latency
+... then, enter your **password**.
 
-- Returns an object with a delay of 1 second (default)
-- Supports query string:
-  - ?limit=integer
-  - ?offset=integer
+##### Create new collection
 
-#### Request:
-
-```
-curl http://127.0.0.1:3333/latency
+```shell
+db.createCollection('applications')
 ```
 
-#### Response:
+**List connections**
 
-```json
-{
-  "data": "Thanks for waiting 1 second"
-}
+```shell
+show collections
 ```
 
-#### Query string
+Sample output:
 
-##### GET /latency?delay=2000
-
-- Increases latency (delay) to `n` milliseconds where, _min:1000_ and _max:4000_. Default value: 1000ms.
-
-Wrong type for `n` value will produce a default delay of 1000ms.
-
-###### Request:
-
-```
-curl http://127.0.0.1:3333/latency?delay=2000
+```shell
+applications
+objectlabs-system
+objectlabs-system.admin.collections
+users
 ```
 
-###### Response:
+##### Import the sample data into the collection
 
-```json
-{
-  "data": "Thanks for waiting 2 seconds"
-}
+You can get the list of hosts through `Web UI` https://cloud.mongodb.com/ (Go to the Cluster and check its Overview data) or using the `mongo cli`
+
+```shell
+mongo "mongodb+srv://your-mongodb-endpoint.1ckup.mongodb.net/your-database" --username your-user
+rs.status()
+# Check under members key
 ```
 
+Then, import the data...
 
-### GET everything else 
-
-- Any other endpoint will retrieve an object
-
-#### Request:
-
+```shell
+mongoimport --host your-mongodb-endpoint-shard-00-02.1ckup.mongodb.net:27017,your-mongodb-endpoint-shard-00-00.1ckup.mongodb.net:27017,your-mongodb-endpoint-shard-00-01.1ckup.mongodb.net:27017 \
+  --ssl -u your-username -p 'your-password' \
+  --authenticationDatabase admin  --db your-database\
+  --collection applications --drop --file ./app-mock-data.json
 ```
-curl http://127.0.0.1:3333/
-```
-#### Response:
 
-```json
-{
-  "message": "Node.js, Express, and MongoDB API!"
-}
+**Sample output:**
+
+```shell
+2021-06-21T14:05:44.817-0700	[########################] your-database.applications	77.0KB/77.0KB (100.0%)
+2021-06-21T14:05:45.146-0700	[########################] your-database.applications	77.0KB/77.0KB (100.0%)
+2021-06-21T14:05:45.146-0700	1000 document(s) imported successfully. 0 document(s) failed to import.
 ```
 
 ---
 
-## Notes:
-If you need help at the tie of [Migrating from mLab to MongoDB Atlas](./migrating-mlab-to-mongo-atlas.md)
+## Kudos
 
+* Extended version of Scott Moss > FEM API Design in Node.js
+* Mock data provided by: https://www.mockaroo.com/
