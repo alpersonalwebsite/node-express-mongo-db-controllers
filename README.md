@@ -24,7 +24,7 @@ If you need to create a custom controller for a particular resource, add it to `
 
 For operations involving `side effects`, or, everything outside the scope of retrieving (GET) you should definitely need authentication and authorization before executing the operation. You don't want random people creating, updating, deleting your resources. This should be obvious, however, if you are using this a template be extremely careful since we are not protecting endpoints (it is not the goal of this material).
 
-Once you have the proper logic in place to allow certain entities to perform CRUD operations, and, if you are going to use `1generic controllers`, just chain the method and pass the imported controller in your `/src/resources/collection/router.js`
+Once you have the proper logic in place to allow certain entities to perform CRUD operations, and, if you are going to use `generic controllers`, just chain the method and pass the imported controller in your `/src/resources/collection/router.js`
 
 So, as an example, if you want to support the creation of a new application in the applications collection your `/src/resources/applications/router.js` would look like:
 
