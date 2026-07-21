@@ -19,8 +19,8 @@ export const getSomeOrAll = (model) => async (req, res) => {
   try {
     const docs = await model
       .find()
-      .limit(toNumber(req.query.limit || 40))
-      .skip(toNumber(req.query.offset))
+      .limit(toNumber(req.query.limit, 40))
+      .skip(toNumber(req.query.offset, 0))
       .lean()
       .exec()
 
