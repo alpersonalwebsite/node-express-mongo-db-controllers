@@ -8,7 +8,7 @@ import userRouter from './resources/users/router'
 import { connect } from './utils/db'
 import { simulate } from './utils/latency'
 
-const PORT = 3333
+const PORT = process.env.PORT || 3333
 
 const app = express()
 
@@ -38,12 +38,12 @@ app.get('*', (req, res) => {
 })
 
 export const start = async () => {
-  try {
-    await connect()
-    app.listen(PORT, () => {
-      console.log(`REST API on http://localhost:${PORT}`)
-    })
-  } catch (e) {
-    console.error(e)
-  }
+  // Kick off the DB connection but don't block booting on it, so the non-DB
+  // routes (/latency, catch-all) stay usable even if MongoDB is unreachable.
+  // Connection errors are reported by the 'error' handler set up in connect().
+  connect().catch(() => {})
+
+  app.listen(PORT, () => {
+    console.log(`REST API on http://localhost:${PORT}`)
+  })
 }
