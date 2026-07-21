@@ -19,15 +19,15 @@ export const getSomeOrAll = (model) => async (req, res) => {
   try {
     const docs = await model
       .find()
-      .limit(toNumber(req.query.limit || 40))
-      .skip(toNumber(req.query.offset))
+      .limit(toNumber(req.query.limit, 40))
+      .skip(toNumber(req.query.offset, 0))
       .lean()
       .exec()
 
     res.status(200).json({ data: docs })
   } catch (err) {
     console.error(err)
-    res.status(400).end()
+    res.status(500).end()
   }
 }
 
@@ -60,8 +60,6 @@ export const updateOne = (model) => async (req, res) => {
 export const deleteOne = (model) => async (req, res) => {
   try {
     const removedDoc = await model.findOneAndRemove({ _id: req.params.id })
-
-    console.log(removedDoc)
 
     if (!removedDoc) {
       return res.status(404).end()

@@ -4,7 +4,7 @@
 
 This is an easy, basic and raw example of **HOW to** implement an API with Node, Express and MongoDB (Atlas) **with generic controllers**
 
-This project is based on the template `node-express-mongo-db`. Check out the repo [README](../node-express-mongo-db/README.md) for setup and development.
+This project is based on the template [`node-express-mongo-db`](https://github.com/alpersonalwebsite/node-express-mongo-db). Check out that repo's README for setup and development.
 
 ---
 
